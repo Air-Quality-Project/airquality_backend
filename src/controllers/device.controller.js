@@ -44,10 +44,17 @@ export const updateFirmware = async (req, res) => {
       return res.status(400).json({ error: "Firmware version required" });
     }
 
-    await Device.updateOne(
+    const result = await Device.updateOne(
       { device_id: deviceId },
-      { firmware, updatedAt: new Date() }
+      {
+        $set: {
+          firmware,
+          updatedAt: new Date()
+        }
+      }
     );
+
+    console.log("Firmware update result:", result);
 
     res.json({
       success: true,
