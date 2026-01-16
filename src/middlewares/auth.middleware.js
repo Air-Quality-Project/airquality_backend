@@ -20,6 +20,10 @@ export const authMiddleware = async (req, res, next) => {
     });
   }
 
+    // 🔥 HEARTBEAT UPDATE (FIX #3)
+  device.last_seen = new Date();
+  await device.save();
+
   req.device = device;
   next();
 };

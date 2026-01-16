@@ -3,6 +3,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import deviceRoutes from "./routes/device.routes.js";
 import path from "path";
+import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js"
+
 
 
 
@@ -22,5 +25,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/device", deviceRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+
 
 export default app;
