@@ -8,6 +8,9 @@ import userRoutes from "./routes/user.routes.js"
 
 
 
+const __dirname = path.resolve();
+
+
 
 const app = express();
 
@@ -28,5 +31,12 @@ app.use("/api/device", deviceRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+// 3️⃣ React Router fallback
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 export default app;

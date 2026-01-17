@@ -1,8 +1,13 @@
 import express from "express";
 import { userAuth } from "../middlewares/userAuth.middleware.js";
+import { getProfile } from "../controllers/user.controller.js";
+
 import { Device } from "../models/device.model.js";
 
+
 const router = express.Router();
+router.get("/profile", userAuth, getProfile);
+
 
 router.get("/devices", userAuth, async (req, res) => {
   const devices = await Device.find({ owner: req.user._id }).select(

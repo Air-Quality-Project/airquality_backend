@@ -31,14 +31,7 @@ const UserSchema = new mongoose.Schema(
   default: null,
 },
 
-pairing: {
-  code: String,
-  expires_at: Date,
-  claimed: {
-    type: Boolean,
-    default: false,
-  },
-},
+
 
   },
   { timestamps: true }

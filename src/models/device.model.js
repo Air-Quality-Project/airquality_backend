@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const DeviceSchema = new mongoose.Schema(
   {
+    // 🔹 Device identity
     device_id: {
       type: String,
       required: true,
@@ -17,7 +18,7 @@ const DeviceSchema = new mongoose.Schema(
       required: true,
     },
 
-    // 🔥 CURRENT firmware running on device (source of truth)
+    // 🔹 Firmware state (reported by device)
     firmware: {
       type: String,
       default: "1.0.0",
@@ -27,7 +28,28 @@ const DeviceSchema = new mongoose.Schema(
       type: String,
     },
 
-    // 🔧 DEVICE CONFIG (sent to ESP32)
+    // 🔐 OWNERSHIP (THIS IS THE KEY FIX)
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    // 🔗 PAIRING (TEMPORARY, FOR CLAIMING)
+    pairing: {
+      code: {
+        type: String,
+      },
+      expires_at: {
+        type: Date,
+      },
+      claimed: {
+        type: Boolean,
+        default: false,
+      },
+    },
+
+    // ⚙️ DEVICE CONFIG (sent to ESP32)
     config: {
       report_interval: {
         type: Number,
@@ -39,13 +61,11 @@ const DeviceSchema = new mongoose.Schema(
         default: "Asia/Kolkata",
       },
 
-      // ✅ OTA MASTER SWITCH
       ota_enabled: {
         type: Boolean,
         default: true,
       },
 
-      // ✅ OTA PAYLOAD
       ota: {
         version: {
           type: String,
@@ -56,6 +76,7 @@ const DeviceSchema = new mongoose.Schema(
       },
     },
 
+    // 🫀 Heartbeat
     last_seen: {
       type: Date,
       default: Date.now,

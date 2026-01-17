@@ -8,13 +8,26 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: "Missing fields" });
     }
 
-    await registerUser({ name, email, password });
+    // 1️⃣ Create user
+    const user = await registerUser({ name, email, password });
 
-    res.status(201).json({ success: true });
+    // 2️⃣ Auto-login after register
+    const { token } = await loginUser({ email, password });
+
+    // 3️⃣ Send token + user
+    res.status(201).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
+
 
 export const login = async (req, res) => {
   try {
@@ -28,6 +41,7 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        
       },
     });
   } catch (err) {
